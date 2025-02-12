@@ -207,9 +207,18 @@ class JumperGame:
     def __init__(self):
         pygame.init()
         pygame.display.set_caption('Jumper Game')
+
+        # variables
         self.screen = pygame.display.set_mode((JumperGame.SCREEN_WIDTH, JumperGame.SCREEN_HEIGHT))
         self.game_font = pygame.font.Font('font/Minecraft.ttf', 60)
         self.clock = pygame.time.Clock()
+
+        self.bg_x = 0
+        self.player_index = 0
+        self.player_x = int(JumperGame.SCREEN_WIDTH / 2)
+        self.player_y = 670
+
+        # begin
         self.launch_game()
 
     def launch_game(self):
@@ -220,8 +229,30 @@ class JumperGame:
                     exit()
 
             # update everything
+            self.provide_background()
+            self.provide_player()
             pygame.display.update()
             self.clock.tick(60)
+
+    def provide_background(self):
+        bg_surface = pygame.image.load('graphics/bg.jpg').convert()
+        bg_surface = pygame.transform.scale(bg_surface, (JumperGame.SCREEN_WIDTH, JumperGame.SCREEN_HEIGHT))
+        self.screen.blit(bg_surface, (self.bg_x, 0))
+        self.screen.blit(bg_surface, (JumperGame.SCREEN_WIDTH + self.bg_x, 0))
+        if self.bg_x == -JumperGame.SCREEN_WIDTH:
+            self.screen.blit(bg_surface, (JumperGame.SCREEN_WIDTH + self.bg_x, 0))
+            self.bg_x = 0
+        self.bg_x -= 5
+
+    def provide_player(self):
+        player_walk_1 = pygame.image.load('graphics/player_1.png').convert_alpha()
+        player_walk_2 = pygame.image.load('graphics/player_2.png').convert_alpha()
+        player_walk = [player_walk_1, player_walk_2]
+        self.player_index += 0.1
+        if self.player_index >= len(player_walk):
+            self.player_index = 0
+        player_surface = player_walk[int(self.player_index)]
+        self.screen.blit(player_surface, (self.player_x, self.player_y))
 
 
 if __name__ == '__main__':
