@@ -244,14 +244,17 @@ class JumperGame:
             self.bg_x = 0
         self.bg_x -= 5
 
-    def provide_player(self):
-        player_walk_1 = pygame.image.load('graphics/player_1.png').convert_alpha()
-        player_walk_2 = pygame.image.load('graphics/player_2.png').convert_alpha()
-        player_walk = [player_walk_1, player_walk_2]
-        self.player_index += 0.1
-        if self.player_index >= len(player_walk):
-            self.player_index = 0
-        player_surface = player_walk[int(self.player_index)]
+    def provide_player(self, jump_action=False):
+        if jump_action:
+            player_surface = pygame.image.load('graphics/player_1.png').convert_alpha()
+        else:
+            player_walk_1 = pygame.image.load('graphics/player_1.png').convert_alpha()
+            player_walk_2 = pygame.image.load('graphics/player_2.png').convert_alpha()
+            player_walk = [player_walk_1, player_walk_2]
+            self.player_index += 0.1
+            if self.player_index >= len(player_walk):
+                self.player_index = 0
+            player_surface = player_walk[int(self.player_index)]
         self.screen.blit(player_surface, (self.player_x, self.player_y))
 
 
